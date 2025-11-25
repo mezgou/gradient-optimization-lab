@@ -1,24 +1,24 @@
 #set page(
   numbering: "1",
   margin: (x: 1.5cm, y: 1.5cm),
-  number-align: center
+  number-align: center,
 )
 #set heading(numbering: "1.")
 #show math.equation: set text(size: 12pt)
 
 #let note(body) = block(
-    fill: rgb("#f8f8f8"),
-    stroke: 1pt + rgb("#e0e0e0"),
-    width: 100%,
-    radius: 4pt,
-    inset: 10pt,
-  )[
-    #set text(size: 13pt, lang: "ru", hyphenate: auto)
-    #set par(justify: true)
-    #show math.equation: set text(size: 13pt)
+  fill: rgb("#f8f8f8"),
+  stroke: 1pt + rgb("#e0e0e0"),
+  width: 100%,
+  radius: 4pt,
+  inset: 10pt,
+)[
+  #set text(size: 13pt, lang: "ru", hyphenate: auto)
+  #set par(justify: true)
+  #show math.equation: set text(size: 13pt)
 
-    #body
-  ]
+  #body
+]
 
 #align(center, text(15pt)[
   *МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ
@@ -67,7 +67,7 @@
   #outline(
     title: [
       #text(size: 16pt, weight: "bold")[Содержание]
-    ]
+    ],
   )
 ]
 
@@ -120,7 +120,7 @@
 #note[
   С помощью метода Лагранжа исследовать функцию на условный экстремум при данном(-ых) уравнении(-ях) связи.
 
-  $f(x, y, z) = x + y - z$, $quad y + z = 1$, $x^2 + y^2 = 1$ 
+  $f(x, y, z) = x + y - z$, $quad y + z = 1$, $x^2 + y^2 = 1$
 ]
 
 #pagebreak()
@@ -168,9 +168,104 @@
 
   Для каждой точки теперь нужно найти матрицу Гессе и проверить выполнение условия достаточного экстремума. Благодаря этому мы сможем сделать вывод о типе экстремума.
   Матрица Гессе для каждой точки будет выглядеть так:
+
+  $
+    H = mat(
+      frac(partial^2 f, partial x^2), frac(partial^2 f, partial x partial y);
+      frac(partial^2 f, partial y partial x), frac(partial^2 f, partial y^2)
+    )
+  $
+
+  #v(23pt)
+
+  $ frac(partial^2 f, partial x^2)(x, y) = 12x^2 - 4 $
+
+  $ frac(partial^2 f, partial y^2)(x, y) = 6y $
+
+  $ frac(partial^2 f, partial x partial y)(x, y) = 0 $
+
+  $
+    H = mat(
+      12x^2 - 4, 0;
+      0, 6y
+    )
+  $
+
+  Тип экстремума можем понять через выполнение условия достаточного эсктремума, для этого нужно смотреть на определенность матрицы Гессе по критерию Сильвестра, если $det(H) > 0$, то смотрим на
+  $frac(partial^2 f, partial x^2)(x_0, y_0)$, если он больше нуля, то точка является локальным минимумом, иначе - локальный максимум, если $det(H) = 0$, то мы ничего не можем сказать о точке, если $det(H) < 0 =>$ седловая точка
+
+  В общем случае расчеты выглядят так:
+
+  $
+    det(H) = frac(partial^2 f, partial x^2)(x, y) frac(partial^2 f, partial y^2)(x, y) - (frac(partial^2 f, partial x partial y)(x, y))^2
+  $
+
+  $ det(H) = (12x^2 - 4)6y $
+
+  $(-1, -1): det(H) = -48 < 0 =>$ седловая точка
+
+  $(-1, 1) : det(H) = 48 > 0 =>$ локальный минимум
+
+  $(0, -1) : det(H) = 24 > 0 =>$ локальный максимум
+
+  $(1, 1) : det(H) = 48 > 0 =>$ локальный минимум
+
+  $(0, 1) : det(H) = -24 < 0 =>$ седловая точка
+
+  $(1, -1) : det(H) = -48 < 0 =>$ седловая точка
+
+  *Итого:*
+
+  ${(-1, -1), (0, 1), (1, -1)}$ - множество седловых точек
+
+  ${(-1, 1), (1, 1)}$ - множество точек локального минимума
+
+  ${(0, -1)}$ - множество точек локального максимума
+
+  Во всех стационарных точках $det(H) != 0$, поэтому условие достаточного экстремума полностью классифицирует все точки
 ]
 
+#pagebreak()
+
 == Практический этап
+
+#align(center)[
+  #figure(
+    image("assets/plot_function.png", width: 50%),
+    caption: ["График $f(x, y)$"],
+  )
+]
+
+#align(center)[
+  #figure(
+    image("assets/contours.png", width: 50%),
+    caption: ["Линии уровня $f(x, y)$"],
+  )
+]
+
+#block[
+  #set text(size: 12pt)
+  Построили график $f(x, y)$ и её линии уровня, отметили все стационарные точки. Можно увидеть по графикам наглядно, что наша классификация стационарных точек правильна.
+
+  Теперь можем показать, что направление наискорейшего возрастания функции совпадает с направлением градиента функции, а убывания - с направление антиградиента.
+  Формально докажем для функции от двух переменных:
+
+  Введем определение производной по направлению единичного вектора $e = (e_1, e_2)$ в точке $(x_0, y_0)$
+
+  $ D_e f(x_0, y_0) = lim_(t -> 0)frac(f(x_0 + t e_1, y_0 + t e_2) - f(x_0, y_0), t), quad norm(e) = 1 $
+
+  #v(1pt)
+
+  $f(x, y)$ у нас должна быть конечно дифференцируема, если это так, то при малых t мы получаем разложение
+
+  $ f(x_0 + t e_1, y_0 + t e_2) ≈ f(x_0, y_0) + frac(partial f, partial x)(x_0, y_0) t e_1 + frac(partial f, partial y)(x_0, y_0) t e_2 $
+
+  В пределе мы получаем:
+  
+  $ D_e f(x_0, y_0) = frac(partial f, partial x)(x_0, y_0) e_1 + frac(partial f, partial y)(x_0, y_0) e_2 quad => quad D_e f(x_0, y_0) = ⟨gradient f(x_0, y_0), e⟩ = norm(gradient f(x_0, y_0)) cos(phi) $ 
+
+  Поскольку в точке $(x_0, y_0)$ длина градиента $norm(gradient f(x_0, y_0))$ фиксирована, величина производной по направлению зависит только от $cos(phi)$. Очевидно из этого, что максимум достигается при $cos(phi) = 1, phi = 0$, когда направление совпадает с градиентом, так как превращается всё по итогу в форму $D_e f(x_0, y_0) = norm(gradient f(x_0, y_0))$. Минимум - при $cos(phi) = -1$, то есть движение в направление антиградиента
+]
 
 #pagebreak()
 
