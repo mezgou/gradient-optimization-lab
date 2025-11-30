@@ -295,7 +295,7 @@
 
   По правилу цепи получаем выражение и хотим чтобы оно совпала с левой частью ДУ $a frac(partial z, partial x) + b frac(partial z, partial y)$
 
-  $ frac(d z, d s) = frac(partial z, partial x) frac(partial x, partial s) + frac(partial z, partial y) frac(partial y, partial s) $
+  $ frac(d z, d s) = frac(partial z, partial x) frac(d x, d s) + frac(partial z, partial y) frac(d y, d s) $
 
   $ frac(d x, d s) = a(x, y), quad frac(d y, d s) = b(x, y) $
 
