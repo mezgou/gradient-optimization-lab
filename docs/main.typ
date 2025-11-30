@@ -289,7 +289,75 @@
 #block[
   #set text(size: 12pt)
 
+  Для решения данного ДУ будем использовать метод характеристик. Слева можем заметить, что там находится дифференциал по направлению $(y, -x)$. Метод подразумевает, что мы смотрим на кривые, вдоль которых уравнение упрощается до обычного ДУ, вместо того, чтобы сразу искать $z(x, y)$. Введем кривые:
+  
+  $ x = x(s), quad y = y(s), quad z = z(s) $
 
+  По правилу цепи получаем выражение и хотим чтобы оно совпала с левой частью ДУ $a frac(partial z, partial x) + b frac(partial z, partial y)$
+
+  $ frac(d z, d s) = frac(partial z, partial x) frac(partial x, partial s) + frac(partial z, partial y) frac(partial y, partial s) $
+
+  $ frac(d x, d s) = a(x, y), quad frac(d y, d s) = b(x, y) $
+
+  Всё превращается в систему обычных ДУ
+
+  $ cases(frac(d x, d s) = y, frac(d y, d s) = -x, frac(d z, d s) = (y - x) z) $
+
+  Поделим второе уравнение на первое и получим:
+
+  $ frac(d y, d x) = - frac(x, y) | * y quad => quad y frac(d y, d x) = -x | * d x quad => quad y d y = -x d x $
+
+  $ integral y d y = integral - x d x quad => quad frac(y^2, 2) = - frac(x^2, 2) + C quad => quad x^2 + y^2 = C_1 $
+
+  Рассмотрим $w(s) = ln z(s) - x(s) - y(s)$, найдем производную по $s$
+
+  $ frac(d w, d s) = frac(1, z) frac(d z, d s) - frac(d x, d s) - frac( d y, d s) quad => quad frac(1, z) (y - x) z - y + x = 0 $
+
+  Получаем, что по каждой характеристике, в нашем случае окружности, $w$ не меняется, остается одним и тем же числом. Значит, что $w$ зависит только от $x^2 + y^2$. Пусть $w(x, y) = F(u)$, где $u = x^2 + y^2$ и $F$ - произвольная дифференцируемая функция $=> F(x^2 + y^2) = ln z(x, y) - x - y$
+
+  $ ln z(x, y) = F(x^2 + y^2) + x + y $
+
+  $ z(x, y) = e^(F(x^2 + y^2) + x + y) $
+
+  Введем $G(u) = e^(F(u)) => z(x, y) = e^(x + y) G(x^2 + y^2)$, $G$ - также произвольная дифференцируемая функция
+
+  #v(3pt)
+
+  $ frac(partial z, partial x) = e^(x + y) G(u) + e^(x + y) G′(u) 2x $ 
+
+  $ frac(partial z, partial y) = e^(x + y) G(u) + e^(x + y) G′(u) 2y $ 
+
+  Проверим, что наше $z(x, y)$ удовлетворяет ДУ $y frac(partial z, partial x) - x frac(partial z, partial y) = (y - x)z$. Подставим наши значения
+
+  $ y frac(partial z, partial x) - x frac(partial z, partial y) = e^(x + y) G(u)(y - x) $
+
+  $ y frac(partial z, partial x) - x frac(partial z, partial y) = (y - x) z(x, y) $
+
+  Осталось перейти к функции $w(u, v)$ от $z(x, y)$
+
+  $ w = ln z - x - y quad => quad ln z = w + x + y quad => quad z = e^(w+x+y) $
+
+  $ frac(partial w, partial x) = frac(1, z) frac(partial z, partial x) - 1, quad  frac(partial w, partial y) = frac(1, z) frac(partial z, partial y) - 1 $
+
+  $ frac(frac(partial z, partial x), z) = frac(partial w, partial x) + 1, quad frac(frac(partial z, partial y), z) = frac(partial w, partial y) + 1 $
+
+  Подставим в исходное ДУ и получим:
+
+  $ y(frac(partial w, partial x) + 1) - x(frac(partial w, partial y) + 1) = y - x quad => quad y frac(partial w, partial x) - x frac(partial w, partial y) = 0 $
+
+  По правилу цепи мы можем выразить $frac(partial w, partial x), frac(partial w, partial y)$ через $frac(partial w, partial u), frac(partial w, partial v)$
+
+  $ frac(partial w, partial x) = frac(partial w, partial u) frac(partial u, partial x) + frac(partial w, partial v) frac(partial v, partial x), quad frac(partial w, partial y) = frac(partial w, partial u) frac(partial u, partial y) + frac(partial w, partial v) frac(partial v, partial y) $
+
+  $ frac(partial w, partial x) = 2x frac(partial w, partial u) - frac(1, x^2) frac(partial w, partial v), quad frac(partial w, partial y) = 2 y frac(partial w, partial u) - frac(1, y^2) frac(partial w, partial v) $
+
+  Из $y frac(partial w, partial x) - x frac(partial w, partial y) = 0$ получаем:
+
+  $ (- frac(y, x^2) + frac(x, y^2)) frac(partial w, partial v) = 0 $
+
+  $ frac(partial w, partial v)(u, v) = 0 $
+
+  Получается, что оно зависит только от $u$, значит $w(u, v) = F(u)$, где $F$ - произвольная дифференцируемая функция. Дальше мы просто подставляем $u = x^2 + y^2$ и можем выразить уже то, что получали до этого $z(x, y) = e^(x + y)G(x^2 + y^2)$, проверку решения с этим выражением мы делали, повторяться не имеет смысла
 ]
 
 #pagebreak()
